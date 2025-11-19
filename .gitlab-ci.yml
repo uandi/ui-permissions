@@ -1,0 +1,82 @@
+.on_main:
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      when: "on_success"
+
+.on_merge_request:
+  rules:
+    - if: "$CI_MERGE_REQUEST_ID"
+      when: "on_success"
+
+stages:
+  - qa
+
+.qa:
+  image: php:8.3-cli-alpine
+  stage: qa
+  rules:
+    - !reference [ .on_main, rules ]
+    - !reference [ .on_merge_request, rules ]
+  before_script:
+    - curl --show-error --silent "https://getcomposer.org/installer" | php
+    - php composer.phar install --ignore-platform-reqs
+
+qa:composer:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:composer
+
+qa:json:lint:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:json:lint
+
+qa:php:cs-fixer:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:php:cs-fixer
+
+qa:php:lint:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:php:lint
+
+qa:php:rector:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:php:rector
+
+qa:php:sniff:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:php:sniff
+
+qa:php:stan:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:php:stan
+
+qa:typo3:fractor:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:typo3:fractor
+
+qa:typoscript:lint:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:typoscript:lint
+
+qa:yaml:lint:
+  extends:
+    - ".qa"
+  script:
+    - php composer.phar ci:yaml:lint
