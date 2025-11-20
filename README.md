@@ -1,13 +1,19 @@
-# u+i | TYPO3 Permissions Extension
+# u+i | Deployable TYPO3 Permissions
 
 TYPO3 extension to declaratively manage backend user group permissions as code.
 
-It introduces deployable YAML descriptions of permissions that are gathered from all active extensions, merged, and written into the database via a CLI command. This makes permission changes reviewable (VCS), testable, and reproducible across environments.
+If you have a TYPO3 project with any level of permissions for backend users you probably ran into one of the following problems:
+- Creating the permissions in the TYPO3 backend takes a lot of time and clicks
+- If you have different environments like INT, PPE and PROD, you would have to create the permissions on each environment
+- You deployed something to PROD and forgot about the permissions until the customer calls because he can't see the new feature
+
+This extension introduces deployable YAML descriptions of permissions that are gathered from all active extensions, merged, and written into the database via a CLI command. This makes permission changes reviewable (VCS), testable, and reproducible across environments.
 
 
 ## What it does
 
 - Collects all files matching `*.permissions.yaml` from every active TYPO3 extension (recursive scan)
+  - These YAML files basically contain abstractions of `be_groups` and `sys_filemounts` records.
 - Merges all found configurations deterministically
 - Writes/updates corresponding records in:
   - `sys_filemounts`
@@ -21,6 +27,22 @@ It introduces deployable YAML descriptions of permissions that are gathered from
 - Enable safe deployments without manual backend tweaking
 - Keep environments (INT/PPE/PROD) in sync
 - Provide a clear, readable schema that is easy to review in pull requests
+- If you know how TYPO3 permissions work and how they are stored in the DB, you'll have no trouble writing the YAML abstractions  
+
+
+## Installation
+
+```bash
+composer require uandi/ui-permissions
+```
+
+### Extension configuration (Settings → Extension Configuration)
+
+- `pidBeGroups` (int): PID to store/update `be_groups` records
+- `pidSysFilemounts` (int): PID to store/update `sys_filemounts` records
+- `createFilemountDirectories` (bool): Create directories for filemounts if missing
+
+These values are used by the repositories when inserting/updating records.
 
 
 ## CLI usage
@@ -46,10 +68,10 @@ Any filename ending with `.permissions.yaml` is picked up.
 Based on the “TYPO3 Backend User Management” concept (naming-for-purpose), use clear, prefixed keys. The map key of each item becomes its durable `permission_key` (and should also inform the filename):
 
 - R_\<Name>: Role groups that aggregate capabilities via `subgroup`, e.g. `R_Editors`, `R_EditorsInChief`
-- ACL_\<Name>: Access control scopes for single tables/features/CTypes, e.g. `ACL_tt_content_common`, `ACL_uice_gallery`
-- FM_\<Name>: Filemount definitions and helper groups that attach filemounts, e.g. `FM_TYPO3BlueprintIcons`
-- DB_\<Name>: Database (page tree) mounts, e.g. `DB_TYPO3Blueprint`
-- PG_\<Name>: Page-related presets, e.g. `PG_TYPO3Blueprint`
+- ACL_\<Name>: Access control scopes for single tables/features/CTypes, e.g. `ACL_tt_content_common`, `ACL_contentelement_gallery`
+- FM_\<Name>: Filemount definitions and helper groups that attach filemounts, e.g. `FM_ProjeectIcons`
+- DB_\<Name>: Database (page tree) mounts, e.g. `DB_Projeect`
+- PG_\<Name>: Page-related presets, e.g. `PG_Projeect`
 - L_\<Name>: Language-related presets for accessible languages, e.g. `L_Spanish`
 
 #### Further reading
@@ -63,21 +85,9 @@ Based on the “TYPO3 Backend User Management” concept (naming-for-purpose), u
 - Name files accordingly, e.g. `R_Editors.permissions.yaml` containing a `be_groups: R_Editors: ...` definition
 - Compose roles (R_*) from ACL_* and FM_* using `subgroup` and `fileMountpoints`
 
-### Example files
-
-Real-world examples are included in the [TYPO3 Blueprint](https://gitlab.uandi.com/basics/typo3/application):
-
-- packages/ui_ce/ContentBlocks/ContentElements/\*/permissions/\*.permissions.yaml
-  - e.g. `packages/ui_ce/ContentBlocks/ContentElements/Gallery/permissions/ACL_uice_gallery.permissions.yaml`
-- packages/ui_sitepackage/Configuration/Permissions/\*.permissions.yaml
-  - e.g. `packages/ui_sitepackage/Configuration/Permissions/R_Editors.permissions.yaml`
-- packages/ui_sitepackage/Configuration/Permissions/Sets/Default/\*.permissions.yaml
-  - e.g. `packages/ui_sitepackage/Configuration/Permissions/Sets/Default/FM_TYPO3BlueprintIcons.permissions.yaml`
-
 
 ## YAML schema
-
-Top-level keys:
+As was already noted, the YAML files are abstractions of the database records. So the top level keys describe which table we're dealing with:
 
 - `sys_filemounts`: map of filemounts by a unique key ("permission key")
 - `be_groups`: map of backend groups by a unique key ("permission key")
@@ -115,7 +125,7 @@ Legacy support: If `identifier` is missing, the pair `base` + `path` will be con
 - `customOptions` (array|string CSV)
 - `mfaProviders` (array)
 
-Some fields are resolved after initial persistence (e.g., `subgroup`, `fileMountpoints`). See `Classes/Domain/Repository/BackendUserGroupRepository.php`.
+Some fields are resolved after initial persistence (e.g., `subgroup`, `fileMountpoints`). See `Classes/Domain/Repository/BackendUserGroupRepository.php` for some insights.
 
 
 ### Merge behavior
@@ -128,22 +138,23 @@ Merging is custom (see `ConfigurationCollector::mergeConfiguration()`):
 This enables layering configurations across multiple extensions.
 
 
-## Examples (based on real files in this repo)
+## Examples
+Examples of permissions files 
 
-Example ACL for a content element (CType):
+### Example ACL for a content element (CType)
 
 ```yaml
 be_groups:
-  ACL_uice_gallery:
+  ACL_contentelement_gallery:
     tables_select: tt_content
     tables_modify: tt_content
     explicit_allowdeny:
       tt_content:
         CType:
-          - uice_gallery
+          - contentelement_gallery
 ```
 
-Example role composed of many ACLs:
+### Example role composed of many ACLs
 
 ```yaml
 be_groups:
@@ -158,68 +169,66 @@ be_groups:
       - ACL_tt_content_shortcut
 
       # Content Elements
-      - ACL_uice_gallery
-      - ACL_uice_media
-      - ACL_uice_quote
-      - ACL_uice_stage
-      - ACL_uice_teaser
-      - ACL_uice_textmedia
+      - ACL_contentelement_gallery
+      - ACL_contentelement_media
+      - ACL_contentelement_quote
+      - ACL_contentelement_stage
+      - ACL_contentelement_teaser
+      - ACL_contentelement_textmedia
 
       # Grids
-      - ACL_uice_grid2columns50-50
-      - ACL_uice_grid3columns33-33-33
-      - ACL_uice_grid4columns25-25-25-25
+      - ACL_contentelement_grid2columns50-50
+      - ACL_contentelement_grid3columns33-33-33
+      - ACL_contentelement_grid4columns25-25-25-25
     groupMods:
       - web_layout
       - media_management
       - user_setup
 ```
 
-Example filemounts (FM_*) and their respective be_groups:
+### Example filemounts (FM_*) and their respective be_groups
 
 ```yaml
 sys_filemounts:
-  FM_TYPO3BlueprintIcons:
+  FM_ProjeectIcons:
     title: 'Assets'
     description: 'Base Fileadmin Folder for Icons'
-    identifier: '1:/user_upload/TYPO3_Blueprint/Icons/'
+    identifier: '1:/user_upload/Projeect/Icons/'
 
-  FM_TYPO3BlueprintIcons_ReadOnly:
+  FM_ProjeectIcons_ReadOnly:
     title: 'Icons'
     description: 'Base Fileadmin Folder for Icons (Read Only)'
-    identifier: '1:/user_upload/TYPO3_Blueprint/Icons/'
+    identifier: '1:/user_upload/Projeect/Icons/'
     read_only: 1
 
 be_groups:
-  FM_TYPO3BlueprintIcons:
+  FM_ProjeectIcons:
     file_mountpoints:
-      - FM_TYPO3BlueprintIcons
+      - FM_ProjeectIcons
 
-  FM_TYPO3BlueprintIcons_ReadOnly:
+  FM_ProjeectIcons_ReadOnly:
     file_mountpoints:
-      - FM_TYPO3BlueprintIcons_ReadOnly
+      - FM_ProjeectIcons_ReadOnly
 ```
 
-Example database mount (DB_*):
+### Example database mount (DB_*)
 
 ```yaml
 be_groups:
-  DB_TYPO3Blueprint:
+  DB_Projeect:
     db_mountpoints: 1
 ```
 
 
-## Extension configuration (Settings → Extension Configuration)
-
-- `pidBeGroups` (int): PID to store/update `be_groups` records
-- `pidSysFilemounts` (int): PID to store/update `sys_filemounts` records
-- `createFilemountDirectories` (bool): Create directories for filemounts if missing
-
-These values are used by the repositories when inserting/updating records.
-
-
 ## Tips
-
+ 
 - Keep permission keys unique and stable; they become the durable identifier (`permission_key`) across environments
 - Split large setups into multiple files; merging will combine them
 - Prefer arrays over CSV for readability, but both are supported in many fields
+
+
+## What's next
+
+- CLI Command to create YAML files from existing permissions in the database to make it easier to introduce this extension to existing projects
+- Maybe try to introduce some level of plausibility/error checks to make it easier to find misconfigurations in the YAML abstraction files
+ 
