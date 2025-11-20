@@ -4,3 +4,4 @@
 /composer.phar
 /gl-report.php-cs-fixer.json
 /gl-report.phpstan.json
+/.idea
