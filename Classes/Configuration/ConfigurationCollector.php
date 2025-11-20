@@ -12,7 +12,7 @@ use UI\UiPermissions\Dto\FileMountDto;
 
 class ConfigurationCollector
 {
-    public const string PERMISSION_FILE_PATTERN = '/.*\.permissions\.yaml$/';
+    public const PERMISSION_FILE_PATTERN = '/.*\.permissions\.yaml$/';
 
     protected PackageManager $packageManager;
 

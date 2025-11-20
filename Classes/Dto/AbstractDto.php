@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AbstractDto
 {
-    public const array FIELD_MAPPING = [];
+    public const FIELD_MAPPING = [];
 
     protected string $permissionKey;
 

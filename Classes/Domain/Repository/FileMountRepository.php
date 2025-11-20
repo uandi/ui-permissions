@@ -13,7 +13,7 @@ use UI\UiPermissions\Dto\FileMountDto;
 
 class FileMountRepository extends AbstractRepository
 {
-    public const string TABLE = 'sys_filemounts';
+    public const TABLE = 'sys_filemounts';
 
     protected bool $createFilemountDirectories = true;
 

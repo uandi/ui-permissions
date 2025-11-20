@@ -12,7 +12,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AbstractRepository
 {
-    public const string TABLE = '';
+    public const TABLE = '';
 
     protected int $pid = 0;
 

@@ -6,7 +6,7 @@ namespace UI\UiPermissions\Dto;
 
 class BackendUserGroupDto extends AbstractDto
 {
-    public const array FIELD_MAPPING = [
+    public const FIELD_MAPPING = [
         'groupMods' => 'groupMods',
         'TSconfig' => 'TSconfig',
     ];
