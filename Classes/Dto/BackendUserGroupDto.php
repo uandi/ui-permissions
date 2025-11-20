@@ -6,7 +6,7 @@ namespace UI\UiPermissions\Dto;
 
 class BackendUserGroupDto extends AbstractDto
 {
-    public const FIELD_MAPPING = [
+    public const array FIELD_MAPPING = [
         'groupMods' => 'groupMods',
         'TSconfig' => 'TSconfig',
     ];
@@ -18,15 +18,12 @@ class BackendUserGroupDto extends AbstractDto
     protected array $pagetypesSelect;
     protected array $nonExcludeFields;
     protected array $explicitAllowdeny;
-
     protected array $dbMountpoints;
     protected array $fileMountpoints = [];
     protected array $filePermissions;
-
     protected array $subgroup = [];
     protected array $groupMods;
     protected string $TSconfig;
-
     protected array $allowedLanguages;
     protected array $customOptions;
     protected array $mfaProviders;

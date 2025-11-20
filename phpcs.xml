@@ -19,7 +19,6 @@
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="PSR1.Classes.ClassDeclaration"/>
     <rule ref="Squiz.Classes.ClassFileName"/>
-    <rule ref="Squiz.Classes.DuplicateProperty"/>
     <rule ref="Squiz.Classes.LowercaseClassKeywords"/>
     <rule ref="Squiz.Classes.SelfMemberReference"/>
 
@@ -52,9 +51,6 @@
     <!-- Control structures -->
     <rule ref="PEAR.ControlStructures.ControlSignature"/>
 
-    <!-- Debug -->
-    <rule ref="Generic.Debug.ClosureLinter"/>
-
     <!-- Files -->
     <rule ref="Generic.Files.LineLength">
         <exclude-pattern>*</exclude-pattern>
@@ -68,7 +64,6 @@
     <rule ref="PEAR.Formatting.MultiLineAssignment"/>
 
     <!-- Functions -->
-    <rule ref="Generic.Functions.CallTimePassByReference"/>
     <rule ref="Squiz.Functions.FunctionDuplicateArgument"/>
     <rule ref="Squiz.Functions.GlobalFunction"/>
 
@@ -85,8 +80,6 @@
     <rule ref="Generic.NamingConventions.ConstructorName"/>
     <rule ref="PEAR.NamingConventions.ValidClassName"/>
 
-    <!-- Objects -->
-    <rule ref="Squiz.Objects.ObjectMemberComma"/>
 
     <!-- Operators -->
     <rule ref="Squiz.Operators.IncrementDecrementUsage"/>
@@ -132,7 +125,6 @@
             <property name="ignoreNewlines" value="true" />
         </properties>
     </rule>
-    <rule ref="Squiz.WhiteSpace.PropertyLabelSpacing"/>
     <rule ref="Squiz.WhiteSpace.ScopeClosingBrace">
         <severity>0</severity>
         <type>warning</type>

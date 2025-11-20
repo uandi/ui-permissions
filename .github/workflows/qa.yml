@@ -1,0 +1,53 @@
+name: QA
+
+on:
+  push:
+    branches:
+      - main
+      - feature/initial
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+
+    # Mehrere QA-Tasks als Matrix (statt viele fast identische Jobs)
+    strategy:
+      fail-fast: false
+      matrix:
+        task:
+          - ci:composer
+          - ci:json:lint
+          - ci:php:cs-fixer
+          - ci:php:lint
+          - ci:php:rector
+          - ci:php:sniff
+          - ci:php:stan
+          - ci:typo3:fractor
+          - ci:typoscript:lint
+          - ci:yaml:lint
+
+    name: ${{ matrix.task }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Install Composer
+        run: |
+          curl --show-error --silent "https://getcomposer.org/installer" | php
+
+      - name: Install dependencies
+        run: |
+          php composer.phar install --ignore-platform-reqs
+
+      - name: Run ${{ matrix.task }}
+        run: php composer.phar ${{ matrix.task }}

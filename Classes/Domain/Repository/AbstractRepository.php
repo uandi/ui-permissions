@@ -12,23 +12,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class AbstractRepository
 {
-    public const TABLE = '';
+    public const string TABLE = '';
 
-    protected ConnectionPool $connectionPool;
     protected int $pid = 0;
 
     public function __construct(
-        ConnectionPool $connectionPool
-    ) {
-        $this->connectionPool = $connectionPool;
-    }
+        protected ConnectionPool $connectionPool
+    ) {}
 
     /**
-     * @return false|mixed[]
-     *
      * @throws Exception
      */
-    public function findOneByPermissionKey(string $groupKey)
+    public function findOneByPermissionKey(string $groupKey): array|false
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(static::TABLE);
         $queryBuilder
@@ -49,11 +44,9 @@ class AbstractRepository
     }
 
     /**
-     * @return false|mixed[]
-     *
      * @throws Exception
      */
-    public function findOneByTitle(string $title)
+    public function findOneByTitle(string $title): array|false
     {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable(static::TABLE);
         $queryBuilder

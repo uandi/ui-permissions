@@ -10,11 +10,11 @@ $config->getFinder()
 $config
     ->setRiskyAllowed(true)
     ->addRules([
-        '@PHP74Migration' => true,
-        '@PHP74Migration:risky' => true,
-        '@PHP80Migration' => true,
-        '@PHP80Migration:risky' => true,
-        'modernize_strpos' => true, // needs PHP 8+ or polyfill
+        '@PHP7x4Migration' => true,
+        '@PHP7x4Migration:risky' => true,
+        '@PHP8x0Migration' => true,
+        '@PHP8x0Migration:risky' => true,
+        'modernize_strpos' => true,
     ]);
 
 return $config;

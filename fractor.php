@@ -10,6 +10,7 @@ use Helmich\TypoScriptParser\Parser\Printer\PrettyPrinterConfiguration;
 return FractorConfiguration::configure()
     ->withPaths([__DIR__])
     ->withSkip([
+        __DIR__ . '/.Build',
         __DIR__ . '/phpcs.xml',
     ])
     ->withSets([

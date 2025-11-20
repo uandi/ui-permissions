@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['ui_permissions'] = [
     'title' => 'u+i | Permissions',
-    'description' => 'Deployable permissions via YAML configuration files',
+    'description' => 'Deployable TYPO3 permissions via YAML configuration files',
     'category' => 'be',
     'author' => 'Sebastian Swan',
-    'author_email' => 'seswan@uandi.com',
+    'author_company' => 'u+i interact GmbH & Co. KG',
+    'author_email' => 'mail@uandi.com',
     'state' => 'stable',
-    'version' => '2.0.0',
+    'version' => '1.0.0',
     'constraints' => [
         'depends' => [
             'typo3' => '13.4.0-13.4.99',

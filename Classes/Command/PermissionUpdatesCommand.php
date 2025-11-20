@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace UI\UiPermissions\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,6 +13,10 @@ use UI\UiPermissions\Configuration\ConfigurationCollector;
 use UI\UiPermissions\Domain\Repository\BackendUserGroupRepository;
 use UI\UiPermissions\Domain\Repository\FileMountRepository;
 
+#[AsCommand(
+    name: 'ui_permissions:update',
+    description: 'Parse permission definitions and generate the corresponding database entries',
+)]
 class PermissionUpdatesCommand extends Command
 {
     protected function configure(): void

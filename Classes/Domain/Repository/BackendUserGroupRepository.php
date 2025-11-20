@@ -11,7 +11,7 @@ use UI\UiPermissions\Dto\BackendUserGroupDto;
 
 class BackendUserGroupRepository extends AbstractRepository
 {
-    public const TABLE = 'be_groups';
+    public const string TABLE = 'be_groups';
 
     public function __construct(
         ConnectionPool $connectionPool
