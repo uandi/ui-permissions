@@ -1,0 +1,7 @@
+/.Build/*
+/.php-cs-fixer.cache
+/auth.json
+/composer.phar
+/gl-report.php-cs-fixer.json
+/gl-report.phpstan.json
+/.idea

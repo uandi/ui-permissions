@@ -1,0 +1,10 @@
+# customsubcategory=pageids=LLL:EXT:ui_permissions/Resources/Private/Language/locallang_db_ext_conf.xlf:subcategory.pageids
+
+# cat=basic/pageids; type=int; label=LLL:EXT:ui_permissions/Resources/Private/Language/locallang_db_ext_conf.xlf:option.pidBeGroups
+pidBeGroups = 0
+
+# cat=basic/pageids; type=int; label=LLL:EXT:ui_permissions/Resources/Private/Language/locallang_db_ext_conf.xlf:option.pidSysFilemounts
+pidSysFilemounts = 0
+
+# cat=basic/enable; type=boolean; label=LLL:EXT:ui_permissions/Resources/Private/Language/locallang_db_ext_conf.xlf:option.createFilemountDirectories
+createFilemountDirectories = 1

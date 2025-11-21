@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:ui_permissions/Resources/Private/Language/locallang_db_ext_conf.xlf" date="2023-03-21T10:04:13Z" product-name="ui_permissions">
+		<header/>
+		<body>
+			<trans-unit id="subcategory.pageids" resname="subcategory.pageids">
+				<source>Page IDs</source>
+			</trans-unit>
+			<trans-unit id="option.pidBeGroups" resname="option.pidBeGroups">
+				<source>Storage PID for be_groups records</source>
+			</trans-unit>
+			<trans-unit id="option.pidSysFilemounts" resname="option.pidSysFilemounts">
+				<source>Storage PID for sys_filemount records</source>
+			</trans-unit>
+			<trans-unit id="option.createFilemountDirectories" resname="option.createFilemountDirectories">
+				<source>Create non-existing directories that are defined in the permission configuration files</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
