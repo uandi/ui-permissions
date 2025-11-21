@@ -1,10 +1,6 @@
 name: QA
 
 on:
-  push:
-    branches:
-      - main
-      - feature/initial
   pull_request:
     branches:
       - main

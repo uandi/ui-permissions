@@ -1,4 +1,6 @@
-# u+i | Deployable TYPO3 Permissions
+![QA](https://github.com/uandi/ui-permissions/actions/workflows/qa.yml/badge.svg)
+
+# Deployable TYPO3 Permissions
 
 TYPO3 extension to declaratively manage backend user group permissions as code.
 

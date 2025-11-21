@@ -1,11 +1,10 @@
 {
     "name": "uandi/ui-permissions",
-    "description": "Deployable TYPO3 permissions via YAML configuration files",
+    "description": "Deployable TYPO3 backend user permissions via YAML configuration files",
     "license": "GPL-2.0-or-later",
     "type": "typo3-cms-extension",
     "keywords": [
-        "TYPO3 CMS",
-        "Permissions"
+        "permissions"
     ],
     "authors": [
         {
@@ -18,11 +17,11 @@
     "homepage": "https://www.uandi.com",
     "support": {
         "issues": "https://github.com/uandi/ui-permissions/issues",
-        "source": "https://github.com/uandi/ui-permissions"
+        "source": "https://github.com/uandi/ui-permissions",
+        "docs": "https://github.com/uandi/ui-permissions/blob/main/README.md"
     },
     "require": {
-        "php": "^8.2",
-        "typo3/cms-core": "^13.0"
+        "typo3/cms-core": "^12.4.8 || ^13.4"
     },
     "require-dev": {
         "a9f/typo3-fractor": "^0.5.7",
