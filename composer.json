@@ -1,0 +1,125 @@
+{
+    "name": "uandi/ui-permissions",
+    "description": "Deployable TYPO3 backend user permissions via YAML configuration files",
+    "license": "GPL-2.0-or-later",
+    "type": "typo3-cms-extension",
+    "keywords": [
+        "permissions"
+    ],
+    "authors": [
+        {
+            "name": "Sebastian Swan",
+            "email": "mail@uandi.com",
+            "homepage": "https://www.uandi.com",
+            "role": "Developer"
+        }
+    ],
+    "homepage": "https://www.uandi.com",
+    "support": {
+        "issues": "https://github.com/uandi/ui-permissions/issues",
+        "source": "https://github.com/uandi/ui-permissions",
+        "docs": "https://github.com/uandi/ui-permissions/blob/main/README.md"
+    },
+    "require": {
+        "typo3/cms-core": "^12.4.8 || ^13.4"
+    },
+    "require-dev": {
+        "a9f/typo3-fractor": "^0.5.7",
+        "ergebnis/composer-normalize": "^2.48.2",
+        "friendsofphp/php-cs-fixer": "^3.89.2",
+        "helmich/typo3-typoscript-lint": "^3.3.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4.0",
+        "phpstan/extension-installer": "^1.4.3",
+        "phpstan/phpstan": "^2.1.32",
+        "phpstan/phpstan-strict-rules": "^2.0.7",
+        "seld/jsonlint": "^1.11.0",
+        "spaze/phpstan-disallowed-calls": "^4.7.0",
+        "squizlabs/php_codesniffer": "^4.0.1",
+        "ssch/typo3-rector": "^3.8.0",
+        "typo3/coding-standards": "^0.8.0"
+    },
+    "replace": {
+        "typo3-ter/ui-permissions": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "UI\\UiPermissions\\": "Classes"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "a9f/fractor-extension-installer": true,
+            "ergebnis/composer-normalize": true,
+            "phpstan/extension-installer": true,
+            "typo3/class-alias-loader": true,
+            "typo3/cms-composer-installers": true
+        },
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "vendor-dir": ".Build/vendor"
+    },
+    "extra": {
+        "composer-normalize": {
+            "indent-size": 4,
+            "indent-style": "space"
+        },
+        "typo3/cms": {
+            "extension-key": "ui_permissions",
+            "web-dir": ".Build/public"
+        }
+    },
+    "scripts": {
+        "ci": [
+            "@ci:static"
+        ],
+        "ci:composer": [
+            "@ci:composer:normalize",
+            "@ci:composer:psr-verify"
+        ],
+        "ci:composer:normalize": "@composer normalize --no-check-lock --dry-run",
+        "ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr --no-plugins",
+        "ci:json:lint": "find . -path './*' ! -path '*.Build/*' -name '*.json' | xargs -r php ./.Build/vendor/bin/jsonlint -q",
+        "ci:php": [
+            "@ci:php:lint",
+            "@ci:php:cs-fixer",
+            "@ci:php:rector",
+            "@ci:php:sniff",
+            "@ci:php:stan"
+        ],
+        "ci:php:cs-fixer": "./.Build/vendor/bin/php-cs-fixer fix -v --dry-run --using-cache no --diff",
+        "ci:php:cs-fixer:gl-report": "./.Build/vendor/bin/php-cs-fixer fix -v --dry-run --using-cache no --diff --format=gitlab > gl-report.php-cs-fixer.json",
+        "ci:php:lint": "./.Build/vendor/bin/parallel-lint .*.php *.php Classes Configuration",
+        "ci:php:rector": "./.Build/vendor/bin/rector process --dry-run",
+        "ci:php:sniff": "./.Build/vendor/bin/phpcs -s --standard=phpcs.xml Classes Configuration",
+        "ci:php:stan": "./.Build/vendor/bin/phpstan --no-progress --memory-limit=256M",
+        "ci:php:stan:gl-report": "./.Build/vendor/bin/phpstan --no-progress --memory-limit=256M --error-format=gitlab > gl-report.phpstan.json",
+        "ci:static": [
+            "@ci:composer",
+            "@ci:json:lint",
+            "@ci:php",
+            "@ci:typo3:fractor",
+            "@ci:typoscript:lint",
+            "@ci:yaml:lint"
+        ],
+        "ci:typo3:fractor": "./.Build/vendor/bin/fractor process --dry-run",
+        "ci:typoscript:lint": "./.Build/vendor/bin/typoscript-lint -c typoscript-lint.dist.yml --ansi -n --fail-on-warnings -vvv Configuration/",
+        "ci:yaml:lint": "find . -path './*' ! -path '.*.yml' ! -path '*.Build/*' \\( -name '*.yaml' -o -name '*.yml' \\) | xargs -r php ./.Build/vendor/bin/yaml-lint",
+        "fix": [
+            "@fix:composer:normalize",
+            "@fix:typo3:fractor",
+            "@fix:php"
+        ],
+        "fix:composer:normalize": "@composer normalize",
+        "fix:php": [
+            "@fix:php:rector",
+            "@fix:php:sniff",
+            "@fix:php:cs-fixer"
+        ],
+        "fix:php:cs-fixer": "php-cs-fixer fix",
+        "fix:php:rector": "./.Build/vendor/bin/rector process",
+        "fix:php:sniff": "./.Build/vendor/bin/phpcbf --standard=phpcs.xml Classes Configuration",
+        "fix:typo3:fractor": "./.Build/vendor/bin/fractor process"
+    }
+}

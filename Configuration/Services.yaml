@@ -1,0 +1,17 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  UI\UiPermissions\:
+    resource: '../Classes/*'
+
+  UI\UiPermissions\Configuration\ConfigurationCollector:
+    public: true
+
+  UI\UiPermissions\Domain\Repository\BackendUserGroupRepository:
+    public: true
+
+  UI\UiPermissions\Domain\Repository\FileMountRepository:
+    public: true
