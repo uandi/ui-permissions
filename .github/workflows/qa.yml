@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          php composer.phar install --ignore-platform-reqs
+          TYPO3_SKIP_ASSET_PUBLISH=1 php composer.phar install --ignore-platform-reqs
 
       - name: Run ${{ matrix.task }}
-        run: php composer.phar ${{ matrix.task }}
+        run: TYPO3_SKIP_ASSET_PUBLISH=1 php composer.phar ${{ matrix.task }}
