@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Deployable Permissions',
     'description' => 'Deployable TYPO3 backend user permissions via YAML configuration files',
@@ -13,7 +11,7 @@ $EM_CONF[$_EXTKEY] = [
     'version' => '14.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '14.3.0-14.3.99',
+            'typo3' => '12.4.8-14.3.99',
         ],
         'conflicts' => [],
         'suggests' => [],
