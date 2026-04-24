@@ -10,11 +10,11 @@ use Helmich\TypoScriptParser\Parser\Printer\PrettyPrinterConfiguration;
 return FractorConfiguration::configure()
     ->withPaths([__DIR__])
     ->withSkip([
-        __DIR__ . '/.*/',
         __DIR__ . '/phpcs.xml',
+        __DIR__ . '/.Build',
     ])
     ->withSets([
-        Typo3LevelSetList::UP_TO_TYPO3_13,
+        Typo3LevelSetList::UP_TO_TYPO3_14,
     ])
     ->withOptions([
         TypoScriptProcessorOption::INDENT_SIZE => 4,

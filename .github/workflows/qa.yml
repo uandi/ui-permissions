@@ -31,10 +31,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup PHP 8.2
+      - name: Setup PHP 8.4
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.4'
           coverage: none
 
       - name: Install Composer
@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          php composer.phar install --ignore-platform-reqs
+          TYPO3_SKIP_ASSET_PUBLISH=1 php composer.phar install --ignore-platform-reqs
 
       - name: Run ${{ matrix.task }}
-        run: php composer.phar ${{ matrix.task }}
+        run: TYPO3_SKIP_ASSET_PUBLISH=1 php composer.phar ${{ matrix.task }}

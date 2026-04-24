@@ -60,10 +60,8 @@ class FileMountRepository extends AbstractRepository
 
         if (\count($identifier) === 2 && (int)$identifier[0] > 0) {
             $storageObject = $storageRepository->findByUid((int)trim($identifier[0]));
-            if ($storageObject instanceof ResourceStorage) {
-                if (!$storageObject->hasFolder(trim($identifier[1]))) {
-                    $storageObject->createFolder(trim($identifier[1]));
-                }
+            if ($storageObject instanceof ResourceStorage && !$storageObject->hasFolder(trim($identifier[1]))) {
+                $storageObject->createFolder(trim($identifier[1]));
             }
         }
     }

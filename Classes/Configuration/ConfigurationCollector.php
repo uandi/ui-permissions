@@ -14,17 +14,10 @@ class ConfigurationCollector
 {
     public const PERMISSION_FILE_PATTERN = '/.*\.permissions\.yaml$/';
 
-    protected PackageManager $packageManager;
-
-    protected YamlFileLoader $yamlFileLoader;
-
     public function __construct(
-        PackageManager $packageManager,
-        YamlFileLoader $yamlFileLoader
-    ) {
-        $this->packageManager = $packageManager;
-        $this->yamlFileLoader = $yamlFileLoader;
-    }
+        protected PackageManager $packageManager,
+        protected YamlFileLoader $yamlFileLoader
+    ) {}
 
     public function collect(): array
     {

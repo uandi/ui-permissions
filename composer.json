@@ -21,22 +21,22 @@
         "docs": "https://github.com/uandi/ui-permissions/blob/main/README.md"
     },
     "require": {
-        "typo3/cms-core": "^12.4.8 || ^13.4"
+        "typo3/cms-core": "^12.4.8 || ^13.4 || ^14.3"
     },
     "require-dev": {
-        "a9f/typo3-fractor": "^0.5.7",
-        "ergebnis/composer-normalize": "^2.48.2",
-        "friendsofphp/php-cs-fixer": "^3.89.2",
-        "helmich/typo3-typoscript-lint": "^3.3.0",
-        "php-parallel-lint/php-parallel-lint": "^1.4.0",
-        "phpstan/extension-installer": "^1.4.3",
-        "phpstan/phpstan": "^2.1.32",
-        "phpstan/phpstan-strict-rules": "^2.0.7",
-        "seld/jsonlint": "^1.11.0",
-        "spaze/phpstan-disallowed-calls": "^4.7.0",
-        "squizlabs/php_codesniffer": "^4.0.1",
-        "ssch/typo3-rector": "^3.8.0",
-        "typo3/coding-standards": "^0.8.0"
+        "a9f/typo3-fractor": "^0.5",
+        "ergebnis/composer-normalize": "^2.49",
+        "friendsofphp/php-cs-fixer": "^3.93",
+        "helmich/typo3-typoscript-lint": "^3.3",
+        "php-parallel-lint/php-parallel-lint": "^1.4",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "seld/jsonlint": "^1.11",
+        "spaze/phpstan-disallowed-calls": "^4.7",
+        "squizlabs/php_codesniffer": "^4.0",
+        "ssch/typo3-rector": "^3.11",
+        "typo3/coding-standards": "^0.8"
     },
     "replace": {
         "typo3-ter/ui-permissions": "self.version"
@@ -76,14 +76,15 @@
         ],
         "ci:composer": [
             "@ci:composer:normalize",
-            "@ci:composer:psr-verify"
+            "@ci:composer:psr-verify",
+            "@composer dump-autoload --optimize"
         ],
         "ci:composer:normalize": "@composer normalize --no-check-lock --dry-run",
         "ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr --no-plugins",
         "ci:json:lint": "find . -path './*' ! -path '*.Build/*' -name '*.json' | xargs -r php ./.Build/vendor/bin/jsonlint -q",
         "ci:php": [
-            "@ci:php:lint",
             "@ci:php:cs-fixer",
+            "@ci:php:lint",
             "@ci:php:rector",
             "@ci:php:sniff",
             "@ci:php:stan"

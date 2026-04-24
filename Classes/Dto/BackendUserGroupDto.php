@@ -91,8 +91,10 @@ class BackendUserGroupDto extends AbstractDto
         $return = [];
         foreach ($this->explicitAllowdeny as $tableName => $field) {
             foreach ($field as $fieldName => $fieldValue) {
-                $fieldValue = preg_filter('/^/', $tableName . ':' . $fieldName . ':', $fieldValue);
-                $return = array_merge($return, (array)$fieldValue);
+                if (is_string($fieldValue) || is_array($fieldValue)) {
+                    $fieldValue = preg_filter('/^/', $tableName . ':' . $fieldName . ':', $fieldValue);
+                    $return = array_merge($return, (array)$fieldValue);
+                }
             }
         }
 
