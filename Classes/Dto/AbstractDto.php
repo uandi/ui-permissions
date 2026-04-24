@@ -31,15 +31,15 @@ class AbstractDto
 
         $dtoProperties = $this->getProperties();
         if ($dtoProperties !== []) {
-            foreach ($dtoProperties as $propertyKey => $propertyValue) {
+            foreach (array_keys($dtoProperties) as $propertyKey) {
                 if (isset(static::FIELD_MAPPING[$propertyKey])) {
                     $fieldKey = static::FIELD_MAPPING[$propertyKey];
                 } else {
                     $fieldKey = $this->camelToSnakeCase($propertyKey);
                 }
 
-                if (method_exists($this, 'get' . ucfirst($propertyKey))) {
-                    $callable = [$this, 'get' . ucfirst($propertyKey)];
+                if (method_exists($this, 'get' . ucfirst((string)$propertyKey))) {
+                    $callable = [$this, 'get' . ucfirst((string)$propertyKey)];
                     if (is_callable($callable)) {
                         $value = \call_user_func($callable);
                         if (
@@ -62,20 +62,20 @@ class AbstractDto
 
         $dtoProperties = $this->getProperties();
         if ($dtoProperties !== []) {
-            foreach ($dtoProperties as $propertyKey => $propertyValue) {
+            foreach (array_keys($dtoProperties) as $propertyKey) {
                 if (isset(static::FIELD_MAPPING[$propertyKey])) {
                     $fieldKey = static::FIELD_MAPPING[$propertyKey];
                 } else {
                     $fieldKey = $this->camelToSnakeCase($propertyKey);
                 }
 
-                if (method_exists($this, 'get' . ucfirst($propertyKey) . 'ProcessedForDatabase')) {
-                    $callable = [$this, 'get' . ucfirst($propertyKey) . 'ProcessedForDatabase'];
+                if (method_exists($this, 'get' . ucfirst((string)$propertyKey) . 'ProcessedForDatabase')) {
+                    $callable = [$this, 'get' . ucfirst((string)$propertyKey) . 'ProcessedForDatabase'];
                     if (is_callable($callable)) {
                         $databaseFieldArray[$fieldKey] = \call_user_func($callable);
                     }
-                } elseif (method_exists($this, 'get' . ucfirst($propertyKey))) {
-                    $callable = [$this, 'get' . ucfirst($propertyKey)];
+                } elseif (method_exists($this, 'get' . ucfirst((string)$propertyKey))) {
+                    $callable = [$this, 'get' . ucfirst((string)$propertyKey)];
                     if (is_callable($callable)) {
                         $databaseFieldArray[$fieldKey] = \call_user_func($callable);
                     }

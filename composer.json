@@ -21,7 +21,7 @@
         "docs": "https://github.com/uandi/ui-permissions/blob/main/README.md"
     },
     "require": {
-        "typo3/cms-core": "^12.4.8 || ^13.4"
+        "typo3/cms-core": "^12.4.8 || ^13.4 || ^14.3"
     },
     "require-dev": {
         "a9f/typo3-fractor": "^0.5",
