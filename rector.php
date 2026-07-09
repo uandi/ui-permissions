@@ -19,6 +19,7 @@ return RectorConfig::configure()
     ->withPaths([__DIR__])
     ->withSkip([
         __DIR__ . '/.Build',
+        __DIR__ . '/ext_emconf.php',
     ])
     // uncomment to reach your current PHP version
     // ->withPhpSets()
@@ -42,7 +43,7 @@ return RectorConfig::configure()
     ])
     ->withConfiguredRule(ExtEmConfRector::class, [
         ExtEmConfRector::PHP_VERSION_CONSTRAINT => '8.4.0-8.4.99',
-        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '14.3.0-14.3.99',
+        ExtEmConfRector::TYPO3_VERSION_CONSTRAINT => '12.4.8-14.3.99',
         ExtEmConfRector::ADDITIONAL_VALUES_TO_BE_REMOVED => [],
     ])
     ->withConfiguredRule(
