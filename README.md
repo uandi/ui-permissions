@@ -56,6 +56,57 @@ Run via TYPO3 CLI. This command is ideally executed during deployments.
 vendor/bin/typo3 ui_permissions:update
 ```
 
+```bash
+# Generate YAML files from the permissions that already exist in the database
+vendor/bin/typo3 ui_permissions:export
+```
+
+
+## Migrating an existing project
+
+`ui_permissions:export` is the inverse of `ui_permissions:update`: it reads the existing `be_groups` and
+`sys_filemounts` records and writes them as `*.permissions.yaml` files. This is meant to bootstrap the
+configuration of a project whose permissions were built in the TYPO3 backend.
+
+```bash
+# Print the whole permission setup as YAML to review it first
+vendor/bin/typo3 ui_permissions:export
+
+# Store the derived permission keys in the database, then write one file per permission key
+vendor/bin/typo3 ui_permissions:export --write-permission-keys --output packages/my_sitepackage/Configuration/Permissions
+```
+
+| Option | Description |
+| --- | --- |
+| `-o, --output` | Directory to write the files to. Relative paths are resolved from the project root, `EXT:` paths are supported. Without this option the YAML is printed to stdout. |
+| `--single-file` | Write everything into one `Permissions.permissions.yaml` instead of one file per permission key. |
+| `-g, --group` | Limit the export to the given `be_groups`, identified by uid, permission key or title. Repeatable. Only the filemounts that these groups reference are exported. |
+| `--include-hidden` | Also export disabled records. They are skipped by default, because the hidden state has no representation in the YAML abstraction. |
+| `--write-permission-keys` | Store the generated permission keys in the database (see below). No other field is touched. |
+| `-f, --force` | Overwrite existing files. Without it, existing files are reported as skipped. |
+
+### Permission keys of existing records
+
+Records that were created through the TYPO3 backend have no `permission_key`, so the export derives one
+from the record title (`Redakteure Süd` becomes `Redakteure_Sued`, duplicates get a numeric suffix).
+
+`ui_permissions:update` matches a record by its `permission_key` and falls back to matching a record whose
+*title* equals the permission key. A derived key that differs from the title would therefore create a second
+record instead of updating the existing one. The export lists exactly those records and recommends a re-run
+with `--write-permission-keys`, which stores the derived keys on the existing records first.
+
+### What the export covers
+
+Without `--group` every non-deleted group and filemount is exported, and `subgroup` and `file_mountpoints`
+are written back as permission keys instead of uids. Fields with no representation in the YAML abstraction
+(for example `hidden`, `category_perms` or `availableWidgets`) are not exported, but every record that uses
+one of them is reported so it can be handled manually. The same applies to references that cannot be
+resolved and, on installations upgraded from TYPO3 v11 or below, to denied values in `explicit_allowdeny`.
+
+The generated files are a starting point, not a finished configuration. Review the permission keys against
+the naming conventions below, move the files into the extensions they belong to, and replace environment
+specific values such as `db_mountpoints` page uids before committing.
+
 
 ## Where to place YAML files
 
@@ -251,6 +302,5 @@ comma-separated list of paths has to stay below that limit.
 
 ## What's next
 
-- CLI Command to create YAML files from existing permissions in the database to make it easier to introduce this extension to existing projects
 - Maybe try to introduce some level of plausibility/error checks to make it easier to find misconfigurations in the YAML abstraction files
  

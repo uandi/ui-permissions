@@ -66,6 +66,47 @@ class AbstractRepository
         return $result->fetchAssociative();
     }
 
+    /**
+     * @throws Exception
+     */
+    public function findAll(bool $includeHidden = true): array
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(static::TABLE);
+        $queryBuilder
+            ->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        $queryBuilder
+            ->select('*')
+            ->from(static::TABLE)
+            ->orderBy('title')
+            ->addOrderBy('uid');
+
+        if (!$includeHidden) {
+            $queryBuilder->where(
+                $queryBuilder->expr()->eq('hidden', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
+            );
+        }
+
+        return $queryBuilder->executeQuery()->fetchAllAssociative();
+    }
+
+    /**
+     * Store a permission key on an existing record without touching any other field
+     */
+    public function updatePermissionKey(int $uid, string $permissionKey): void
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(static::TABLE);
+        $queryBuilder
+            ->update(static::TABLE)
+            ->set('permission_key', $permissionKey)
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT))
+            )
+            ->executeStatement();
+    }
+
     protected function add(array $values): void
     {
         // Always use the configured pid
