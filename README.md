@@ -123,9 +123,13 @@ Legacy support: If `identifier` is missing, the pair `base` + `path` will be con
 - `subgroup` (array|string CSV of other be_group permission keys)
 - `groupMods` (array|string CSV)
 - `TSconfig` (string)
+- `tsconfigIncludes` (array|string CSV of `EXT:`-paths to TSconfig files)
 - `allowedLanguages` (array|string CSV of sys_language uids)
 - `customOptions` (array|string CSV)
-- `mfaProviders` (array)
+- `mfaProviders` (array|string CSV)
+- `workspacePerms` (bool|int, default: false - grants editing in the live workspace)
+
+Only fields that are present in the YAML are written to the database. Omitting a field does not reset it, the value that is already stored in the record is kept. Unknown keys are silently ignored.
 
 Some fields are resolved after initial persistence (e.g., `subgroup`, `fileMountpoints`). See `Classes/Domain/Repository/BackendUserGroupRepository.php` for some insights.
 
@@ -220,6 +224,22 @@ be_groups:
   DB_Projeect:
     db_mountpoints: 1
 ```
+
+### Example TSconfig includes
+
+Instead of inlining everything into `TSconfig`, reference deployable TSconfig files. The
+paths are stored as given, so they stay valid across environments.
+
+```yaml
+be_groups:
+  R_Editors:
+    tsconfig_includes:
+      - 'EXT:ui_sitepackage/Configuration/user.tsconfig'
+      - 'EXT:ui_sitepackage/Configuration/TsConfig/User/Editors.tsconfig'
+```
+
+Note that TYPO3 stores `tsconfig_includes` in a `varchar(255)` column, so the resulting
+comma-separated list of paths has to stay below that limit.
 
 
 ## Tips

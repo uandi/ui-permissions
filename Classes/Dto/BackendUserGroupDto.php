@@ -24,14 +24,14 @@ class BackendUserGroupDto extends AbstractDto
     protected array $subgroup = [];
     protected array $groupMods;
     protected string $TSconfig;
+    protected array $tsconfigIncludes;
     protected array $allowedLanguages;
     protected array $customOptions;
     protected array $mfaProviders;
+    protected int $workspacePerms;
 
     //TBD
     protected array $categoryPerms;
-    //TBD
-    protected array $workspacePerms;
 
     public function getAllowedLanguages(): array
     {
@@ -210,8 +210,12 @@ class BackendUserGroupDto extends AbstractDto
         return implode(',', $this->mfaProviders);
     }
 
-    public function setMfaProviders(array $mfaProviders): void
+    public function setMfaProviders(array|string $mfaProviders): void
     {
+        if (\is_string($mfaProviders)) {
+            $mfaProviders = $this->explode($mfaProviders);
+        }
+
         $this->mfaProviders = $mfaProviders;
     }
 
@@ -337,5 +341,34 @@ class BackendUserGroupDto extends AbstractDto
     public function setTSconfig(string $TSconfig): void
     {
         $this->TSconfig = $TSconfig;
+    }
+
+    public function getTsconfigIncludes(): array
+    {
+        return $this->tsconfigIncludes;
+    }
+
+    public function getTsconfigIncludesProcessedForDatabase(): string
+    {
+        return implode(',', $this->tsconfigIncludes);
+    }
+
+    public function setTsconfigIncludes(array|string $tsconfigIncludes): void
+    {
+        if (\is_string($tsconfigIncludes)) {
+            $tsconfigIncludes = $this->explode($tsconfigIncludes);
+        }
+
+        $this->tsconfigIncludes = $tsconfigIncludes;
+    }
+
+    public function getWorkspacePerms(): int
+    {
+        return $this->workspacePerms;
+    }
+
+    public function setWorkspacePerms(bool|int|string $workspacePerms): void
+    {
+        $this->workspacePerms = (int)$workspacePerms;
     }
 }
