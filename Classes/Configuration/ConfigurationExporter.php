@@ -23,6 +23,7 @@ class ConfigurationExporter
         'custom_options',
         'mfa_providers',
         'groupMods',
+        'availableWidgets',
         'tsconfig_includes',
     ];
 
@@ -243,6 +244,7 @@ class ConfigurationExporter
         }
 
         $this->addList($item, $row, 'groupMods');
+        $this->addList($item, $row, 'availableWidgets');
         $this->addList($item, $row, 'tsconfig_includes');
 
         $tsConfig = rtrim((string)($row['TSconfig'] ?? ''));

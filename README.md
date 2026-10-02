@@ -99,8 +99,8 @@ with `--write-permission-keys`, which stores the derived keys on the existing re
 
 Without `--group` every non-deleted group and filemount is exported, and `subgroup` and `file_mountpoints`
 are written back as permission keys instead of uids. Fields with no representation in the YAML abstraction
-(for example `hidden`, `category_perms` or `availableWidgets`) are not exported, but every record that uses
-one of them is reported so it can be handled manually. The same applies to references that cannot be
+(for example `hidden` or `category_perms`) are not exported, but every record that uses one of them is
+reported so it can be handled manually. The same applies to references that cannot be
 resolved and, on installations upgraded from TYPO3 v11 or below, to denied values in `explicit_allowdeny`.
 
 The generated files are a starting point, not a finished configuration. Review the permission keys against
@@ -173,6 +173,7 @@ Legacy support: If `identifier` is missing, the pair `base` + `path` will be con
 - `filePermissions` (array|string CSV)
 - `subgroup` (array|string CSV of other be_group permission keys)
 - `groupMods` (array|string CSV)
+- `availableWidgets` (array|string CSV of dashboard widget identifiers, requires EXT:dashboard)
 - `TSconfig` (string)
 - `tsconfigIncludes` (array|string CSV of `EXT:`-paths to TSconfig files)
 - `allowedLanguages` (array|string CSV of sys_language uids)
@@ -181,6 +182,12 @@ Legacy support: If `identifier` is missing, the pair `base` + `path` will be con
 - `workspacePerms` (bool|int, default: false - grants editing in the live workspace)
 
 Only fields that are present in the YAML are written to the database. Omitting a field does not reset it, the value that is already stored in the record is kept. Unknown keys are silently ignored.
+
+Fields whose database column does not exist in the current installation are skipped instead of letting the
+whole record fail, and `ui_permissions:update` reports them at the end of its run. Optional system
+extensions add their own columns to the permission tables, for example `availableWidgets` which only
+exists when EXT:dashboard is installed. This way the same configuration can be shared across projects
+that do not all install the same system extensions.
 
 Some fields are resolved after initial persistence (e.g., `subgroup`, `fileMountpoints`). See `Classes/Domain/Repository/BackendUserGroupRepository.php` for some insights.
 

@@ -7,6 +7,7 @@ namespace UI\UiPermissions\Dto;
 class BackendUserGroupDto extends AbstractDto
 {
     public const FIELD_MAPPING = [
+        'availableWidgets' => 'availableWidgets',
         'groupMods' => 'groupMods',
         'TSconfig' => 'TSconfig',
     ];
@@ -23,6 +24,7 @@ class BackendUserGroupDto extends AbstractDto
     protected array $filePermissions;
     protected array $subgroup = [];
     protected array $groupMods;
+    protected array $availableWidgets;
     protected string $TSconfig;
     protected array $tsconfigIncludes;
     protected array $allowedLanguages;
@@ -50,6 +52,25 @@ class BackendUserGroupDto extends AbstractDto
         }
 
         $this->allowedLanguages = $allowedLanguages;
+    }
+
+    public function getAvailableWidgets(): array
+    {
+        return $this->availableWidgets;
+    }
+
+    public function getAvailableWidgetsProcessedForDatabase(): string
+    {
+        return implode(',', $this->availableWidgets);
+    }
+
+    public function setAvailableWidgets(array|string $availableWidgets): void
+    {
+        if (\is_string($availableWidgets)) {
+            $availableWidgets = $this->explode($availableWidgets);
+        }
+
+        $this->availableWidgets = $availableWidgets;
     }
 
     public function getCustomOptions(): array
